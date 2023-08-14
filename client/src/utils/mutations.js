@@ -7,7 +7,9 @@ mutation AddUser($username: String!, $email: String!, $password: String!) {
     user {
       _id
       username
-}
+      email
+      password
+    }
   }
 }
 `;
@@ -19,26 +21,28 @@ mutation Login($username: String!, $password: String!) {
     user {
       _id
       username
+      password
     }
   }
 }
-}
 `;
 
-
-
-export const ADD_RECIPE= gql`
-mutation AddRecipe($title: String, $ingredients: [String], $instructions: String) {
+export const ADD_RECIPE = gql`
+mutation AddRecipe($title: String!, $ingredients: [String]!, $instructions: String!) {
   addRecipe(title: $title, ingredients: $ingredients, instructions: $instructions) {
     _id
     title
     ingredients
     instructions
-    createdAt
+    createdBy {
+      username
+    }
     comments {
       _id
       commentText
-      commentAuthor
+      commentAuthor {
+        username
+      }
       createdAt
     }
   }
@@ -46,18 +50,20 @@ mutation AddRecipe($title: String, $ingredients: [String], $instructions: String
 `;
 
 export const ADD_COMMENT = gql`
-mutation AddComment($recipeId: ID!, $commentText: String, $commentAuthor: String) {
-  addComment(recipeId: $recipeId, commentText: $commentText, commentAuthor: $commentAuthor) {
+mutation AddComment($recipeId: ID!, $commentText: String!) {
+  addComment(recipeId: $recipeId, commentText: $commentText) {
     _id
     comments {
+      _id
       commentText
-      commentAuthor
       createdAt
+      commentAuthor {
+        username
+      }
     }
   }
 }
 `;
-
 
 export const REMOVE_RECIPE = gql`
 mutation RemoveRecipe($recipeId: ID!) {
@@ -66,8 +72,6 @@ mutation RemoveRecipe($recipeId: ID!) {
   }
 }
 `;
-
-
 
 export const REMOVE_COMMENT = gql`
 mutation RemoveComment($recipeId: ID!, $commentId: ID!) {
@@ -79,3 +83,4 @@ mutation RemoveComment($recipeId: ID!, $commentId: ID!) {
   }
 }
 `;
+
