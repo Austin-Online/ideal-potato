@@ -52,9 +52,9 @@ Mutation: {
   },
 
   // Resolver for user login
-  login: async (parent, { email, password }) => {
+  login: async (parent, { username, password }) => {
     // Find a user in the database using the provided email
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ username });
 
     // If no user is found with the provided email, throw an error
     if (!user) {
@@ -130,13 +130,13 @@ Mutation: {
       // Find and delete the specified recipe, if the authenticated user is its author
       const recipe = await Recipe.findOneAndDelete({
         _id: recipeId,
-        recipeAuthor: context.user.username,
+        // recipeAuthor: context.user.username
       });
 
       // Remove the recipe's ID from the user's thoughts array
       await User.findOneAndUpdate(
         { _id: context.user._id },
-        { $pull: { recipes: recipe._id } }
+        { $pull: { recipes: recipeId } }
       );
 
       // Return the deleted recipe

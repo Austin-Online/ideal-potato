@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ExampleComponent = () => {
+const Home = () => {
   
   return (
     <main>
@@ -11,4 +11,4 @@ const ExampleComponent = () => {
   );
 };
 
-export default ExampleComponent;
+export default Home;
