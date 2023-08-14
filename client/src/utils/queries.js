@@ -95,11 +95,15 @@ query Recipe($recipeId: ID!) {
     comments {
       _id
       commentText
+      commentAuthor {
+        username
+      }
       createdAt
     }
   }
 }
 `;
+
 
 export const QUERY_MYRECIPES = gql`
 query MyRecipes($userId: ID!) {
