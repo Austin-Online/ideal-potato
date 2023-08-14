@@ -2,107 +2,124 @@ import { gql } from '@apollo/client';
 
 export const QUERY_USERS = gql`
 query Users {
-    users {
+  users {
+    _id
+    username
+    email
+    password
+    recipes {
       _id
-      username
-      email
-      password
-      recipes {
+      title
+      ingredients
+      instructions
+      createdBy {
+        username
+      }
+      createdAt
+      comments {
         _id
-        title
-        ingredients
-        instructions
+        commentText
         createdAt
-        comments {
+        commentAuthor {
           _id
-          commentText
-          commentAuthor
-          createdAt
+          username
         }
       }
     }
   }
+}
 `;
 
 export const QUERY_USER = gql`
-query User($username: String!) {
-    user(username: $username) {
-      _id
-      username
-      email
-      password
-      recipes {
-        _id
-        title
-        ingredients
-        instructions
-        createdAt
-        comments {
-          _id
-          commentText
-          commentAuthor
-          createdAt
-        }
-      }
-    }
-  }
-`;
-export const QUERY_RECIPES = gql`
-query Recipes($username: String) {
-    recipes(username: $username) {
+query User($userId: ID!) {
+  user(userId: $userId) {
+    _id
+    username
+    email
+    password
+    recipes {
       _id
       title
       ingredients
       instructions
+      createdBy {
+        username
+      }
       createdAt
       comments {
         _id
         commentText
-        commentAuthor
+        commentAuthor {
+          username
+        }
         createdAt
       }
     }
   }
+}
+`;
+export const QUERY_RECIPES = gql`
+query Recipes {
+  recipes {
+    _id
+    title
+    ingredients
+    instructions
+    createdBy {
+      username
+    }
+    createdAt
+    comments {
+      _id
+      commentText
+      commentAuthor {
+        username
+      }
+      createdAt
+    }
+  }
+}
 `;
 
 export const QUERY_RECIPE = gql`
-query Query($recipeId: ID!) {
-    recipe(recipeId: $recipeId) {
+query Recipe($recipeId: ID!) {
+  recipe(recipeId: $recipeId) {
+    _id
+    title
+    ingredients
+    instructions
+    createdBy {
+      username
+    }
+    createdAt
+    comments {
       _id
-      title
-      ingredients
-      instructions
+      commentText
       createdAt
-      comments {
-        _id
-        commentText
-        commentAuthor
-        createdAt
-      }
     }
   }
+}
 `;
 
-export const QUERY_ME = gql`
-query Me {
-    me {
-      _id
+export const QUERY_MYRECIPES = gql`
+query MyRecipes($userId: ID!) {
+  myRecipes(userId: $userId) {
+    _id
+    title
+    instructions
+    ingredients
+    createdBy {
       username
-      email
-      password
-      recipes {
-        _id
-        title
-        ingredients
-        instructions
-        createdAt
-        comments {
-          _id
-          commentText
-          commentAuthor
-          createdAt
-        }
+    }
+    createdAt
+    comments {
+      _id
+      commentText
+      commentAuthor {
+        username
       }
+      createdAt
     }
   }
+}
 `;
