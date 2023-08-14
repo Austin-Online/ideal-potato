@@ -336,8 +336,32 @@ removeComment: async (parent, { recipeId, commentId }, context) => {
   // Throw an error if user is not authenticated
   throw new AuthenticationError('You need to be logged in!');
 },
-  }
+
+
+    // Save a recipe (authenticated)
+    saveRecipe: async (parent, { recipeId }, context) => {
+      try {
+        if (context.user) {
+          // Fetch the authenticated user
+          const user = await User.findById(context.user._id);
+
+          // Update the user's savedRecipes array
+          await User.findByIdAndUpdate(
+            context.user._id,
+            { $addToSet: { savedRecipes: recipeId } }, // Use $addToSet to avoid duplicates
+            { new: true }
+          );
+
+          // Return the updated user
+          return user;
+        }
+        throw new AuthenticationError('You need to be logged in to save a recipe.');
+      } catch (error) {
+        console.error(error);
+        throw new Error('Error saving recipe');
+      }
+    },
+  },
 };
 
 module.exports = resolvers;
-
