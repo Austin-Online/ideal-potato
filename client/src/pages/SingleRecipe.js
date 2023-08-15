@@ -15,21 +15,22 @@ const SingleRecipe = () => {
 
   const recipe = data?.recipe;
 
-  const [isRecipeSaved, setIsRecipeSaved] = useState(false);
+  const [isRecipeSaved, setIsRecipeSaved] = useState(
+    localStorage.getItem(`savedRecipe_${recipeId}`) === 'true'
+  );
+  
 
-  const [saveRecipe, { error }] = useMutation(SAVE_RECIPE, {
+  const [saveRecipe] = useMutation(SAVE_RECIPE, {
     variables: { recipeId: recipe?._id },
     onCompleted: () => {
       setIsRecipeSaved(true);
+      localStorage.setItem(`savedRecipe_${recipeId}`, 'true');
     },
     onError: (error) => {
       console.error("Error saving recipe:", error);
     },
     refetchQueries: [{ query: QUERY_SAVED_RECIPES, variables: { userId: AuthService.getProfile().id } }],
   });
-  if (error) {
-    console.log('Error saving recipe:', error);
-  }
 
   if (loading) {
     return <div>Loading...</div>;
@@ -45,7 +46,11 @@ const SingleRecipe = () => {
       <button
         className="btn btn-primary"
         onClick={() => {
-          saveRecipe();
+          if (isRecipeSaved) {
+            localStorage.removeItem(`savedRecipe_${recipeId}`);
+          } else {
+            saveRecipe();
+          }
         }}
         disabled={isRecipeSaved} // Disable the button if the recipe is already saved
       >
