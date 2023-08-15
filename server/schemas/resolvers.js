@@ -212,39 +212,36 @@ login: async (parent, { username, password }) => {
   return { token, user };
 },
 
-     // Add a recipe (authenticated)
-     addRecipe: async (parent, { title, ingredients, instructions }, context) => {
-      if (context.user) {
-        // Fetch the authenticated user's username
-        const user = await User.findById(context.user._id);
-    
-        // Create a new recipe associated with the authenticated user's _id
-        const recipe = await Recipe.create({
-          title,
-          ingredients,
-          instructions,
-          createdBy: user._id,
-        });
-    
-        await User.findOneAndUpdate(
-          { _id: context.user._id },
-          { $addToSet: { recipes: recipe._id } }
-        );
-    
-        // Manually construct the recipe object with the username field
-        const populatedRecipe = {
-          ...recipe.toObject(),
-          createdBy: {
-            _id: user._id,
-            username: user.username,
-          },
-        };
-    
-        return populatedRecipe;
-      }
-    
-      throw new Error("Authentication required to add a recipe.");
-    },
+// Add resolver for adding a new recipe
+addRecipe: async (parent, { title, ingredients, instructions }, context) => {
+  if (context.user) {
+    const user = await User.findById(context.user._id);
+
+    const newRecipe = new Recipe({
+      title,
+      ingredients,
+      instructions,
+      createdBy: user._id,
+    });
+
+    const savedRecipe = await newRecipe.save();
+
+    await User.findOneAndUpdate(
+      { _id: context.user._id },
+      { $addToSet: { recipes: savedRecipe._id } }
+    );
+
+    return {
+      ...savedRecipe.toObject(),
+      createdBy: {
+        _id: user._id,
+        username: user.username,
+      },
+    };
+  }
+  throw new AuthenticationError('You need to be logged in to add a recipe.');
+},
+
     
 // Resolver to add a new comment to a recipe
 addComment: async (parent, { recipeId, commentText }, context) => {
@@ -369,7 +366,7 @@ saveRecipe: async (parent, { recipeId }, context) => {
       }
     throw new AuthenticationError('You need to be logged in to save a recipe.');
     } catch (error) {
-    console.error(error);
+    console.error('Error saving recipe:', error);
     throw new Error('Error saving recipe');
     }
     },
