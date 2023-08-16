@@ -29,9 +29,13 @@ class AuthService {
 
   getUserId() { //change
     const token = this.getToken();
+    console.log("token:", token );
     const decodedToken = decode(token);
-    return decodedToken?.id || null;
+    console.log("decodedtoken:", decodedToken );
+    console.log("decoded_Id:", decodedToken.data._id );
+    return decodedToken.data?._id || null;
   }
+  
   login(idToken, userId) {//passed in userID
     localStorage.setItem('id_token', idToken);
     localStorage.setItem('user_id', userId); //this is new change
