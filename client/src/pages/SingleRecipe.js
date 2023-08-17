@@ -74,13 +74,22 @@ const SingleRecipe = () => {
   return (
     <div className="my-3">
       {/* Render the recipe data */}
-      <h2 className="card-header bg-dark text-light p-2 m-0">
+      <h2 className="card-header p-2 m-0"
+      style={{
+        backgroundColor: '#726529',
+        
+      }}>
+      
         {recipe.title}<br />
         <span style={{ fontSize: '1rem' }}>
         Created by {recipe.createdBy.username} on {recipe.createdAt}
         </span>
       </h2>
-      <div className="bg-light py-4">
+      <div className=" py-4" 
+        style={{
+          backgroundColor: '#ece9b9',
+          
+        }}>
         <blockquote
           className="p-4"
           style={{
@@ -95,7 +104,11 @@ const SingleRecipe = () => {
       <p>Instructions: {recipe.instructions}</p>
       
       <button
-        className="btn btn-primary"
+        className="btn "
+        style={{
+          backgroundColor: '#9b7427',
+          color: '#ffde59'
+        }}
         onClick={() => {
           if (isRecipeSaved) {
             localStorage.removeItem(`savedRecipe_${recipeId}`);

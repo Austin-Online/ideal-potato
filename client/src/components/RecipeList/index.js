@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import '../../css/recipeRandom.css'
 
 const RecipeList = ({
   recipes,
@@ -19,7 +20,7 @@ const RecipeList = ({
       {showTitle && <h3>{title}</h3>}
       {recipes.map((recipe) => (
         <div key={recipe._id} className="card mb-3">
-          <h4 className="card-header bg-primary text-light p-2 m-0">
+          <h4 className="titleBox p-2 m-0">
             {showUsername ? (
               <Link className="text-light" to={`/recipes/${recipe._id}`}>
                 Created by {recipe.createdBy.username} <br />
@@ -31,20 +32,20 @@ const RecipeList = ({
               </>
             )}
           </h4>
-          <div className="card-body bg-light p-2">
+          <div className="card-body contentBox p-2">
             <h5>{recipe.title}</h5>
             <p>Ingredients: {recipe.ingredients.join(', ')}</p>
             <p>Instructions: {recipe.instructions}</p>
           </div>
           <Link
-            className="btn btn-primary btn-block btn-squared"
+            className="btn buttonLink btn-block btn-squared"
             to={`/recipes/${recipe._id}`}
           >
             View Recipe Details
           </Link>
           {isLoggedIn && recipe.createdBy._id === authService.getUserId() && (
             <button
-              className="btn btn-danger btn-block btn-squared"
+              className="btn btn-dark btn-block btn-squared"
               onClick={() => handleRemoveRecipe(recipe._id)}
             >
               Remove Recipe
