@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
 
 import { ADD_RECIPE } from '../../utils/mutations';
-import { QUERY_RECIPES, QUERY_MYRECIPES } from '../../utils/queries';
+import { QUERY_RECIPES, QUERY_USER } from '../../utils/queries';
 
 import Auth from '../../utils/auth';
 
@@ -25,16 +25,19 @@ const RecipeForm = () => {
         console.error(e);
       }
   
-      // Read the 'me' data from the cache if available
-      const cachedMe = cache.readQuery({ query: QUERY_MYRECIPES });
+      const cachedUser = cache.readQuery({
+        query: QUERY_USER,
+        variables: { userId: Auth.getUserId() },
+      });
   
-      // Update the 'me' data in the cache
+      // Update the 'user' data in the cache
       cache.writeQuery({
-        query: QUERY_MYRECIPES,
+        query: QUERY_USER,
+        variables: { userId: Auth.getUserId() },
         data: {
-          me: {
-            ...cachedMe?.me,
-            recipes: [...(cachedMe?.me?.recipes || []), addRecipe],
+          user: {
+            ...cachedUser?.user,
+            recipes: [...(cachedUser?.user?.recipes || []), addRecipe],
           },
         },
       });
@@ -62,8 +65,8 @@ const RecipeForm = () => {
   };
 
   const handleIngredientChange = (event) => {
-    const { value } = event.target;
-    setIngredients(value.split(','));
+    const newValue = event.target.value;
+    setIngredients(newValue.split(',').map(item => item.trim()));
   };
 
   return (
