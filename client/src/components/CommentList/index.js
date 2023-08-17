@@ -1,4 +1,8 @@
-const CommentList = ({ comments = [] }) => {
+import React from 'react';
+
+const CommentList = ({ comments = [],
+  handleRemoveComment, authService 
+ }) => {
   if (!comments.length) {
     return <h3>No Comments Yet</h3>;
   }
@@ -29,9 +33,17 @@ const CommentList = ({ comments = [] }) => {
                   )}
                 </h5>
                 <p className="card-body">{comment.commentText}</p>
-              </div>
+              {comment.commentAuthor._id === authService.getUserId() && (
+                <button
+                  className="btn btn-danger"
+                  onClick={() => handleRemoveComment(comment._id)}
+                >
+                  Remove Comment
+                </button>
+              )}
             </div>
-          ))}
+          </div>
+        ))}
       </div>
     </>
   );
