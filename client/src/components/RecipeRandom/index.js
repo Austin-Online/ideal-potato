@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import '../../css/recipeRandom.css'
 
 const RecipeRandom = ({
     recipes,
@@ -19,7 +20,7 @@ const RecipeRandom = ({
       <div>
         {showTitle && <h3>{title}</h3>}
         <div key={randomRecipe._id} className="card mb-3">
-          <h4 className="card-header bg-primary text-light p-2 m-0">
+          <h4 className=" titleBox p-2 m-0">
             {showUsername ? (
               <Link
                 className="text-light"
@@ -38,13 +39,13 @@ const RecipeRandom = ({
               </>
             )}
           </h4>
-          <div className="card-body bg-light p-2">
+          <div className="card-body contentBox p-2">
             <h5>{randomRecipe.title}</h5>
             <p>Ingredients: {randomRecipe.ingredients.join(', ')}</p>
             <p>Instructions: {randomRecipe.instructions}</p>
           </div>
           <Link
-            className="btn btn-primary btn-block btn-squared"
+            className="btn buttonLink btn-block btn-squared"
             to={`/recipes/${randomRecipe._id}`}
           >
             View Recipe Details

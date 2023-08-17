@@ -107,7 +107,10 @@ const RecipeForm = () => {
             ></textarea>
           </div>
 
-          <button className="btn btn-primary" type="submit">
+          <button className="btn" type="submit" style={{
+                  backgroundColor: '#9b7427',
+                  color: '#ffde59'
+                }}>
             Add Recipe
           </button>
           

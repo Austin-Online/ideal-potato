@@ -1,0 +1,21 @@
+header{
+    background-color: #ed800e;
+    color: #9b4627;
+}
+.headerLink{
+ color: #ffde59;
+}
+.headerLink:hover{
+ color: #ffde59;
+}
+
+
+/* nav bar  */
+.custom-btn{
+    background-color: #9b7427;
+    color:#ffde59
+}
+.custom-btn:hover{
+     background-color: #726529;
+     color:#ffde59
+}
